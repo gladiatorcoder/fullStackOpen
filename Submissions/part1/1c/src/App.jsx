@@ -22,12 +22,38 @@
 
 // export default App;
 
-import React from 'react'
+import React, { useState } from 'react';
+
+const Display = ({count}) => {
+  return(
+    <div>Count: {count}</div>
+  );
+}
+
+const Button = ({text, action}) => {
+  return(
+    <button onClick={action}>{text}</button>
+  );
+}
 
 const App = (props) => {
-  const {counter} = props
+  let [counter, setCounter] = useState(0);
+
+  const increaseByOne = () => setCounter(counter + 1);
+  const decreaseByOne = () => setCounter(counter - 1);
+  const setToZero = () => setCounter(0);
+
+  const handleClick = () => {
+    setCounter(counter + 1);
+  }
+
   return (
-    <div>Count: {counter}</div>
+    <div>
+      <Display count={counter} />
+      <Button action={increaseByOne} text="+" />
+      <Button action={decreaseByOne} text="-" />
+      <Button action={setToZero} text="Reset" />
+    </div>
   );
 }
 
