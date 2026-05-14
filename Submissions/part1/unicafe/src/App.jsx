@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Button from './components/Button'
-import Stats from '../../1d/src/components/Stats';
+import Stats from './components/Stats';
 
 const App = () => {
   const [good, setGood] = useState(0);
