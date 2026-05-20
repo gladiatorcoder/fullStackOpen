@@ -2,21 +2,26 @@ import React from 'react'
 
 const Total = ({parts}) => {
 
+  console.log("From Total, parts: ", parts);
+
   let total = 0;
   const initTotal=0;
   let calcTotal=0;
+  let courseTotal="undefined";
 
-  const courseTotal = parts.reduce(
-    (accumulator, current) => {
-      calcTotal = accumulator+current.exercises;
-      return calcTotal;
-    }, initTotal
-  );
+  if(parts && parts.length > 1){
+    courseTotal = parts.reduce(
+      (accumulator, current) => {
+        calcTotal = accumulator+current.exercises;
+        return calcTotal;
+      }, initTotal
+    );
+  }
 
   return (
     <div id="Total">
         <p className="total">
-          <strong>Number of exercises: {courseTotal}</strong>
+          {courseTotal !== 'undefined' ? <strong>Number of exercises: {courseTotal}</strong> : ""}
         </p>
     </div>
   )
