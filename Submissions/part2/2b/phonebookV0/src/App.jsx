@@ -3,16 +3,18 @@ import { useState } from 'react'
 const App = () => {
   
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' },
-    { name: 'Josh Kelly' }
+    { name: 'Arto Hellas', number: '9892811067' },
+    { name: 'Josh Kelly', number: '9004483879' }
   ]);
   
-  const [newName, setNewName] = useState('')
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
   let duplicateName=false;
 
   function clearInputField(){
     setNewName("");
     document.getElementById("nameInput").value="";
+    document.getElementById("numberInput").value="";
   };
 
   const handleSubmit = (e) => {
@@ -22,7 +24,7 @@ const App = () => {
 
     persons.map(person => {
       if(person.name.toLowerCase()===newName.toLowerCase()){
-        alert("This name already exists in the phonebook.");
+        alert(`${newName} already exists in the phonebook.`);
         duplicateName=true;
         clearInputField();
         return;
@@ -32,21 +34,26 @@ const App = () => {
     if(duplicateName) return;
     
     const newPerson = {
-      name: newName
+      name: newName,
+      number: newNumber
     };
 
     const updatedPersons = [...persons, newPerson];
-    console.log(`New persons array: `);
-    updatedPersons.map(person => {
-      console.log(person);
-    });
+    // console.log(`New persons array: `);
+    // updatedPersons.map(person => {
+    //   console.log(person);
+    // });
 
     setPersons(updatedPersons);
     clearInputField();
   }
 
   const handleChange = (e) => {
-    setNewName(e.target.value);
+    if(e.target.id==="nameInput"){
+      setNewName(e.target.value);
+    }else if(e.target.id==="numberInput"){
+      setNewNumber(e.target.value);
+    }
   }
 
   return (
@@ -55,6 +62,7 @@ const App = () => {
       <form>
         <div>
           Name: <input id="nameInput" onChange={(e) => handleChange(e)} />
+          Number: <input id="numberInput" onChange={(e) => handleChange(e)} />
         </div>
 
         <div>
@@ -62,12 +70,19 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul>
+      <div id="persons">
+        <script>
+          {console.log("Persons: ", persons)}
+        </script>
         {persons && persons.length > 0 && persons.map(person => {
-            return <li key={person.name}>{person.name}</li>
+            return
+              <div>
+                {person.name && <div key={person.name}>{person.name}</div>}
+                {person.number && <div key={person.number}>{person.number}</div>}
+              </div>
           })
         }
-      </ul>
+      </div>  
     </div>
   )
 }
