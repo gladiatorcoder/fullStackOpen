@@ -27,15 +27,19 @@ const App = (props) => {
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
-      id: String(notes.length + 1),
+      // id: String(notes.length + 1),
     };
-    console.log("addNotes function called. New note is: ", noteObject);
 
-    setNotes(notes.concat(noteObject));
-    if(noteObject.important){
-      setFilteredNotes(filteredNotes.concat(noteObject));
-    }
-    setNewNote("");
+    axios.post('http://localhost:3001/notes', noteObject)
+    .then(res => {
+      setNotes(notes.concat(res.data));
+      if(res.data.important){
+        setFilteredNotes(notes.concat(res.data));
+      }
+      setNewNote("");
+    }).catch(err => {
+      console.log("Error posting the new note: ", err);
+    })
   }
 
   const handleNoteChange = (event) => {
