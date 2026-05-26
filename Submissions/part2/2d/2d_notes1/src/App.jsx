@@ -2,11 +2,13 @@ import { useState } from 'react';
 import Note from './components/Note'
 import { useEffect } from 'react';
 import axios from 'axios';
+import noteServices from './services/noteServices';
 
 const App = (props) => {
 
   //Globals
   const serverUrl = "http://localhost:3001/notes";
+  const {getAll, createNote, updateNote} = noteServices;
 
   //State
   const [notes, setNotes] = useState([]);
@@ -16,13 +18,8 @@ const App = (props) => {
 
   //Effects
   useEffect(() => {
-    axios.get(serverUrl)
-    .then(res => {
-      if(res.data && res.data.length > 0) setNotes(res.data);
-    })
-    .catch(err => {
-      console.error("Error encountered while fetching notes: ", err);
-    })
+    getAll()
+    .then(initialNotes => setNotes(initialNotes));
   }, []);
 
   // State variable based calculations
@@ -37,12 +34,10 @@ const App = (props) => {
       // id: String(notes.length + 1),
     };
 
-    axios.post(serverUrl, noteObject)
-    .then(res => {
-      setNotes(notes.concat(res.data));
+    createNote(noteObject)
+    .then(newNote => {
+      setNotes(notes.concat(newNote));
       setNewNote("");
-    }).catch(err => {
-      console.log("Error posting the new note: ", err);
     })
   }
 
@@ -74,12 +69,16 @@ const App = (props) => {
       return note;
     });
 
-    axios.put(`${serverUrl}/${id}`, noteToBeChanged)
-    .then(res => {
-      console.log(res.data);
-      setNotes(notes.map(note => note.id===id ? res.data : note));
+    updateNote(noteToBeChanged, id)
+    .then(updated => {
+      console.log(updated);
+      setNotes(notes.map(note => note.id===id ? updated : note));
     })
-
+    .catch(err => {
+        console.error(`Error updating note ${id}`, err);
+        alert(`Cannot update the note "${noteToBeChanged.content}" as it was deleted.`);
+        setNotes(notes.filter(note => note.id !== id));
+    });
   }
 
   return (

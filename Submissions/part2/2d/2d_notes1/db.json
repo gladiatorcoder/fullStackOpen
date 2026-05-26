@@ -64,6 +64,16 @@
       "content": "Testing importance",
       "important": false,
       "id": "SS8DzKzYmBI"
+    },
+    {
+      "id": "6ef7",
+      "content": "A newer note",
+      "important": true
+    },
+    {
+      "id": "ccd7",
+      "content": "Test",
+      "important": true
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
