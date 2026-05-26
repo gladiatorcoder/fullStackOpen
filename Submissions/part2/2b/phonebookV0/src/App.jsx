@@ -14,7 +14,7 @@ const App = () => {
     { name: "Aniket Joshi", number: "9896543096" },
     { name: "Ankit Singh", number: "6785437865" },
     { name: "Shakir Ahmed", number: "7710895224" },
-    {name: "Shakir Moulvi", number: "7986239087" }
+    { name: "Shakir Moulvi", number: "7986239087" }
   ]);
 
   //JSX render
