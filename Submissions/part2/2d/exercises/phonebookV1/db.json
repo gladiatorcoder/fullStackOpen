@@ -1,0 +1,40 @@
+{
+  "contacts": [
+    {
+      "id": "1",
+      "name": "Arto Hellas",
+      "number": "9892811067",
+      "edited": false
+    },
+    {
+      "id": "2",
+      "name": "Josh Kelly",
+      "number": "9004483879",
+      "edited": false
+    },
+    {
+      "id": "3",
+      "name": "Josh Hunter",
+      "number": "9807654378",
+      "edited": false
+    },
+    {
+      "id": "4",
+      "name": "Shakir Ahmed",
+      "number": "9876543210",
+      "edited": false
+    },
+    {
+      "id": "4abf",
+      "name": "Smarto Hellnas",
+      "number": "1234567890",
+      "edited": false
+    },
+    {
+      "name": "Arturo Gatti",
+      "number": "0987654321",
+      "edited": true,
+      "id": "e830"
+    }
+  ]
+}
