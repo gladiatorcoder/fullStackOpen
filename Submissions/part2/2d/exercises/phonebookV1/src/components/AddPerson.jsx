@@ -38,7 +38,7 @@ const AddPerson = ({persons, handleSetPersons, updatePerson}) => {
     };
 
     if(duplicateName){
-      if(window.confirm(`Are you sure you want to update ${newName}?`)){
+      if(window.confirm(`${newName} is already added to the phonebook. Change number?`)){
         updateContact(duplicateId, newPerson)
         .then(res => {
           updatePerson(res.data.id, res.data);
