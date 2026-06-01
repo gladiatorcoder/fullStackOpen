@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import contactServices from '../services/contactServices';
 
-const AddPerson = ({persons, handleSetPersons, updatePerson}) => {
+const AddPerson = ({persons, handleSetPersons, updatePerson, setNotification}) => {
 
   //Component globals
   const {addContact, updateContact} = contactServices;
@@ -58,10 +58,11 @@ const AddPerson = ({persons, handleSetPersons, updatePerson}) => {
     .then(newPerson => {
       const updatedPersons = [...persons, newPerson.data];
       handleSetPersons(updatedPersons);
+      setNotification(`${newPerson.data.name} was added successfully.`);
     })
     .catch(err => {
       console.error("Error creating new person: ", err);
-    })
+    });
     clearInputField();
   }
 

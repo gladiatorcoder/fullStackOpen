@@ -3,14 +3,27 @@ import Search from './components/Search';
 import AddPerson from './components/AddPerson';
 import DisplayPersons from './components/DisplayPersons';
 import contactServices from './services/contactServices';
+import Notification from './components/Notification';
 
 const App = () => {
 
   //Globals
   const {getAllContacts} = contactServices;
-
+  let showNotification = false;
+  
   //State
   const [persons, setPersons] = useState([]);
+  const [notification, setNotification] = useState("");
+  const [isErr, setIsErr] = useState(false);
+
+  //Computations
+  if(notification !== ""){
+    showNotification = true;
+    // setTimeout(() => {
+    //   setNotification("");
+    //   showNotification = false;
+    // }, 5000);
+  }
 
   //Functions
   function refreshPersons(){
@@ -18,6 +31,11 @@ const App = () => {
     .then(res => {
         setPersons(res);
     });
+  }
+
+  function closeNotification(){
+    setNotification("");
+    showNotification = false;
   }
 
   function updatePerson(id, updatedPerson){
@@ -45,13 +63,15 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      
+      {showNotification &&
+        <Notification isErr={isErr} message={notification} closeNotification={closeNotification} />
+      }
       <Search persons={persons} />
       <br />
-      <AddPerson persons={persons} handleSetPersons={setPersons} updatePerson={updatePerson} />
-      <DisplayPersons persons={persons} setPersons={setPersons} refreshPersons={refreshPersons} />  
+      <AddPerson persons={persons} handleSetPersons={setPersons} updatePerson={updatePerson} setNotification={setNotification} setIsErr={setIsErr} />
+      <DisplayPersons persons={persons} setPersons={setPersons} refreshPersons={refreshPersons} setNotification={setNotification} setIsErr={setIsErr} />
     </div>
   )
 }
 
-export default App
+export default App;

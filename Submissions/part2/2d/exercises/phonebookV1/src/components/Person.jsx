@@ -2,17 +2,20 @@ import axios from 'axios';
 import React from 'react';
 import contactServices from '../services/contactServices';
 
-const Person = ({person, setPersons, refreshPersons}) => {
+const Person = ({person, setPersons, refreshPersons, setNotification}) => {
 
   //Component globals
   const {deleteContact} = contactServices;
 
   function deleteContact1(id){
-    deleteContact(id)
-    .then(res => {
-      refreshPersons();
-    })
-    .catch(err => console.error("Error deleting contact", id));
+    if(window.confirm(`Are you sure to delete ${person.name}?`)){
+      deleteContact(id)
+      .then(res => {
+        setNotification(`${person.name} deleted from phonebook.`)
+        refreshPersons();
+      })
+      .catch(err => console.error("Error deleting contact", id, err));
+    }
   }
 
   return (

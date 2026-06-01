@@ -1,40 +1,66 @@
 {
   "contacts": [
     {
-      "id": "1",
-      "name": "Arto Hellas",
-      "number": "9892811067",
-      "edited": false
-    },
-    {
-      "id": "2",
-      "name": "Josh Kelly",
-      "number": "9004483879",
-      "edited": false
-    },
-    {
-      "id": "3",
-      "name": "Josh Hunter",
-      "number": "9807654378",
-      "edited": false
-    },
-    {
-      "id": "4",
-      "name": "Shakir Ahmed",
-      "number": "9876543210",
-      "edited": false
-    },
-    {
-      "id": "4abf",
-      "name": "Smarto Hellnas",
+      "name": "Josh Porter",
       "number": "1234567890",
-      "edited": false
+      "edited": true,
+      "id": "WgYFgZjikvQ"
     },
     {
-      "name": "Arturo Gatti",
+      "name": "John Joshi",
+      "number": "2345678901",
+      "id": "sy-8SbIGDBc"
+    },
+    {
+      "name": "Djoshua james",
+      "number": "3456789012",
+      "id": "z0bk1YVEyec"
+    },
+    {
+      "name": "Stephen Thompson",
+      "number": "5678901234",
+      "id": "EruhLwOpQ7w"
+    },
+    {
+      "name": "Erik Lehnsherr",
       "number": "0987654321",
-      "edited": true,
-      "id": "e830"
+      "id": "8aUWDtPGukY"
+    },
+    {
+      "name": "Shmuel Gailey",
+      "number": "8765432109",
+      "id": "Qh_H6A1okC4"
+    },
+    {
+      "name": "Aaron John",
+      "number": "6789012345",
+      "id": "K-EhDmZAW7g"
+    },
+    {
+      "name": "James Bond",
+      "number": "4567890123",
+      "id": "bly9d4R0NN0"
+    },
+    {
+      "name": "Shakir Ahmed",
+      "number": "1234567890",
+      "id": "KeK_r5GB4Xo"
+    },
+    {
+      "name": "Wilson Fisk",
+      "number": "0987654321",
+      "id": "V6jonEnmt7s"
+    },
+    {
+      "name": "Matthew Murdock",
+      "number": "0987654321",
+      "id": "006k_zxCXeE"
+    },
+    {
+      "name": "Frank Castle",
+      "number": "098765321",
+      "id": "sLt9q94ojRE"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
