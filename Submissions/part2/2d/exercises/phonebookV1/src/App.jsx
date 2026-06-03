@@ -19,10 +19,11 @@ const App = () => {
   //Computations
   if(notification !== ""){
     showNotification = true;
-    // setTimeout(() => {
-    //   setNotification("");
-    //   showNotification = false;
-    // }, 5000);
+    setTimeout(() => {
+      setNotification("");
+      setIsErr(false);
+      showNotification = false;
+    }, 5000);
   }
 
   //Functions
@@ -35,6 +36,7 @@ const App = () => {
 
   function closeNotification(){
     setNotification("");
+    setIsErr(false);
     showNotification = false;
   }
 

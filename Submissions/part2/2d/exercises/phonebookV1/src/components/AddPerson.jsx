@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import contactServices from '../services/contactServices';
 
-const AddPerson = ({persons, handleSetPersons, updatePerson, setNotification}) => {
+const AddPerson = ({persons, handleSetPersons, updatePerson, setNotification, setIsErr}) => {
 
   //Component globals
   const {addContact, updateContact} = contactServices;
@@ -42,6 +42,10 @@ const AddPerson = ({persons, handleSetPersons, updatePerson, setNotification}) =
         updateContact(duplicateId, newPerson)
         .then(res => {
           updatePerson(res.data.id, res.data);
+        })
+        .catch(err => {
+          setNotification(`${newName}'s information was not found because it was deleted`);
+          setIsErr(true);
         });
         clearInputField();
         return;
