@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import Country from './Components/Country';
+import Countries from './Components/Countries';
 
 const App = () => {
   //Globals
@@ -67,22 +69,8 @@ const App = () => {
       {notification && <div>
         {notification}  
       </div>}
-      {searchResults && searchResults.length > 1 && <div className='searchResults'>
-        {searchResults.map(result => <div key={result.latlng[0]} className='searchResult'>
-          {result.name.common}
-        </div>)}
-      </div>}
-      {searchResults && searchResults.length === 1 && <div className="countryInfo">
-        <h4>{searchResults[0].name.common}</h4>
-        <div>Capital: {searchResults[0].capital[0]}</div>
-        <div>Area: {searchResults[0].area}</div>
-        <div>Languages
-          <ul>
-            {Object.values(searchResults[0].languages).map(language => <li key={language}>{language}</li>)}
-          </ul>
-        </div>
-        <img src={searchResults[0].flags.png} />
-      </div>}
+      {searchResults && searchResults.length > 1 && <Countries searchResults={searchResults}/>}
+      {searchResults && searchResults.length === 1 && <Country country={searchResults[0].country} />}
     </section>
   )
 }
