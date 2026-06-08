@@ -6,18 +6,19 @@ const Countries = ({searchResults}) => {
   //Component globals
   
   const [displayedCountry, setDisplayedCountry] = useState({});
+  const [displayedCountryIndex, setDisplayedCountryIndex] = useState(0);
 
-  function showCountry(country){
+  function showCountry(country, index){
     setDisplayedCountry(country);
-    console.log("displayedCountry:::", country);
+    setDisplayedCountryIndex(index);
   }
 
   return (
     <div className='searchResults'>
-        {searchResults.map(result => <div key={result.latlng[0]} className='searchResult'>
+        {searchResults.map((result, index) => <div key={result.latlng[0]} className='searchResult'>
             {result.name.common}
-            <button onClick={() => showCountry(result)}>Show</button>
-            {Object.keys(displayedCountry).length > 0 && <Country country={displayedCountry} />}
+            <button onClick={() => showCountry(result, index)}>Show</button>
+            {Object.keys(displayedCountry).length > 0 && displayedCountryIndex===index && <Country country={displayedCountry} />}
         </div>)}
     </div>
   )

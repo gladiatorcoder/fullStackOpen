@@ -44,7 +44,6 @@ const App = () => {
 
     }else if(searchResultsLocal.length===1){
       setSearchResults(searchResultsLocal);
-      console.log(searchResults);
       setNotification("");
 
     }else{
@@ -52,7 +51,7 @@ const App = () => {
       setNotification("");
     }
 
-  }, [searchTerm]);
+  }, [searchTerm, countries]);
 
 
   //Functions
@@ -62,7 +61,7 @@ const App = () => {
   return (
     <section>
       <h2>Search country</h2>
-      <form>
+      <form onSubmit={(e) => {e.preventDefault();} }>
         <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         <button type="submit">Search countries</button>
       </form>
@@ -70,7 +69,7 @@ const App = () => {
         {notification}  
       </div>}
       {searchResults && searchResults.length > 1 && <Countries searchResults={searchResults}/>}
-      {searchResults && searchResults.length === 1 && <Country country={searchResults[0].country} />}
+      {searchResults && searchResults.length === 1 && <Country country={searchResults[0]} />}
     </section>
   )
 }
