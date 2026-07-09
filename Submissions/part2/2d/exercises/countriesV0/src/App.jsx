@@ -20,7 +20,6 @@ const App = () => {
     axios.get(`${baseURL}/api/all`)
     .then(res => {
       setCountries(res.data);
-      console.log("Fetched countries successfully: ", res.data);
     })
     .catch(err => console.log("Error fetching countries", err));
   }, []);
@@ -33,7 +32,6 @@ const App = () => {
     };
     if(countries.length < 1) return;
     const searchResultsLocal = countries.filter(country => country.name.common.toLowerCase().includes(searchTerm.toLowerCase()));
-    console.log(searchResultsLocal);
     if(searchResultsLocal.length > 10){
       setSearchResults([]);
       setNotification("Too many matches, specify another filter.");

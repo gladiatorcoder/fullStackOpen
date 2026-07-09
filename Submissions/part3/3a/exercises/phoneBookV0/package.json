@@ -1,0 +1,24 @@
+{
+  "name": "phonebookv0",
+  "version": "1.0.0",
+  "description": "Phone book app created for learning Express js",
+  "homepage": "https://github.com/gladiatorcoder/fullStackOpen#readme",
+  "bugs": {
+    "url": "https://github.com/gladiatorcoder/fullStackOpen/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gladiatorcoder/fullStackOpen.git"
+  },
+  "license": "ISC",
+  "author": "Shotgun",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
