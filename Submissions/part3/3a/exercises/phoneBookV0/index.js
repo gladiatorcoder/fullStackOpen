@@ -1,5 +1,5 @@
 const express = require("express");
-const data = require("./db.json");
+let data = require("./db.json");
 const app = express();
 const PORT = 3001;
 
@@ -10,10 +10,47 @@ app.get("/", (req, res) => {
     res.send("PhoneBook");
 });
 
+app.get("/api/persons", (req, res) => {
+    if (data && data.length > 0) {
+        res.status(200).send(data);
+    } else {
+        res.status(404).send("Data not found!");
+    }
+});
+
+app.get("/api/persons/:id", (req, res) => {
+    const id = req.params.id;
+    const contact = data.find(contact => contact.id === id);
+    if (contact) {
+        res.status(200).send(contact);
+    } else {
+        res.status(404).send("Contact not found!");
+    }
+});
+
+app.delete("/api/persons/:id", (req, res) => {
+    const id = req.params.id;
+    const contact = data.find(contact => contact.id === id);
+
+    if (contact) {
+        data = data.filter(contact => contact.id !== id);
+        res.status(204).send(data);
+    } else {
+        res.status(404).send("Contact to delete not found!");
+    }
+});
+
+app.post("/api/persons", (req, res) => {
+    const id = Math.floor(Math.random() * 190000).toString();
+    console.log(req.body);
+});
+
+
+
 
 // Page endpoints
 
-app.get("/api/persons", (req, res) => {
+app.get("/persons", (req, res) => {
     let html = "<h1>Persons</h1>";
 
     if (data && data.length > 1) {
@@ -60,13 +97,14 @@ app.get("/api/persons", (req, res) => {
     }
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-    console.log("Deleting:", req.params.id);
-    res.json({ message: "Delete successful" });
+app.delete("/persons/:id", (req, res) => {
+    const id = req.params.id;
+    data = data.filter(contact => contact.id !== id);
+    res.send(data);
 });
 
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/persons/:id", (req, res) => {
     const person = data.find(person => {
         return person.id === req.params.id;
     });
