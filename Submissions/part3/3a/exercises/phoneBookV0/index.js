@@ -1,7 +1,30 @@
 const express = require("express");
 let data = require("./db.json");
+const morgan = require("morgan");
 const app = express();
 const PORT = 3001;
+
+// Enable express to read form data in request.body
+app.use(express.urlencoded({ extended: true }));
+//app.use(express.json());
+
+
+// Request logger middleware
+
+// const requestLogger = (req, res, next) => {
+//     console.log('Method: ', req.method);
+//     console.log('Path: ', req.path);
+//     console.log('Body: ', req.body);
+//     console.log('---');
+//     next();
+// };
+
+// Request logger call
+// app.use(requestLogger);
+
+
+// Morgan middleware configuration
+const logger = morgan('tiny');
 
 
 // API endpoints
@@ -41,8 +64,26 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
+    console.log("req body object: ", req.body);
     const id = Math.floor(Math.random() * 190000).toString();
-    console.log(req.body);
+    if (req.body.name && req.body.number) {
+        const duplicateName = data.find(contact => contact.name === req.body.name);
+        const duplicateNumber = data.find(contact => contact.number === req.body.number);
+        if (duplicateName || duplicateNumber) {
+            res.status(400).send("Name or number already exists.");
+        } else {
+            const newContact = {
+                id: id,
+                name: req.body.name,
+                number: req.body.number
+            };
+            data.push(newContact);
+            res.status(200).send(data);
+        }
+    } else {
+        console.log("No req body object found");
+        res.status(400).send("Incorrect data received!");
+    }
 });
 
 
@@ -100,7 +141,7 @@ app.get("/persons", (req, res) => {
 app.delete("/persons/:id", (req, res) => {
     const id = req.params.id;
     data = data.filter(contact => contact.id !== id);
-    res.send(data);
+    res.status(204).send(data);
 });
 
 
@@ -134,6 +175,15 @@ app.get("/info", (req, res) => {
         res.send("No information found!");
     }
 });
+
+
+// Unknown endpoint middleware
+
+const unknownEndPoint = (req, res, next) => {
+    res.status(404).send("This endpoint was not found!");
+}
+
+app.use(unknownEndPoint);
 
 
 app.listen(PORT, () => {
