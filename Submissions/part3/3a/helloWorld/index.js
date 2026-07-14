@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+const baseURL = 'http://localhost:3001/api/notes';
+
 
 let notes = [
     {
