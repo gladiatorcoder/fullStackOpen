@@ -1,16 +1,17 @@
-const express = require("express");
-let data = require("./db.json");
-const morgan = require("morgan");
-const axios = require("axios");
+import express from "express";
+import data from "./db.json" with {type: 'json'};
+import morgan from "morgan";
+import cors from "cors";
 const app = express();
 const PORT = 3001;
-const cors = require("cors");
 
 // Enable express to read form data in request.body
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 //app.use(express.json());
+
+
+// Enable app to use cors middleware npm package
+app.use(cors());
 
 
 // Request logger middleware
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
+    console.log(data);
     // logger(req, res, function (err) {
     if (data && data.length > 0) {
         res.status(200).send(data);
@@ -86,12 +88,14 @@ app.post("/api/persons", (req, res) => {
                     number: req.body.number
                 };
                 data.push(newContact);
-                res.status(200).send(newContact);
+                res.status(200).send(data);
             }
         } else {
             console.log("No req body object found");
             res.status(400).send("Incorrect data received!");
         }
+
+        console.log(req.body);
     });
 });
 

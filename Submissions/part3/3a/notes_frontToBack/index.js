@@ -1,19 +1,10 @@
 import express from "express";
 const app = express();
 app.use(express.json());
-import axios from "axios";
-const baseURL = 'http://localhost:3001/api/notes';
+import cors from "cors";
+const PORT = process.env.PORT || 3001;
 
-const getAll = () => {
-    const req = axios.get(baseURL);
-    return req.then(res => res.data);
-}
-
-const createNote = () => {
-    const req = axios.post(baseURL, req.body);
-    console.log(req);
-}
-
+app.use(cors());
 
 let notes = [
     {
@@ -29,7 +20,7 @@ let notes = [
     {
         id: "3",
         content: "GET and POST are the most immportant methods of the HTTP protocol",
-        imnportant: true
+        important: true
     }
 ];
 
@@ -84,9 +75,6 @@ app.delete("/api/notes/:id", (req, res) => {
     res.status(204).end();
 });
 
-const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Listening on ${PORT}`);
 });
-
-export default { getAll, createNote };
