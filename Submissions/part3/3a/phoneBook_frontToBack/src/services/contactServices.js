@@ -5,6 +5,7 @@ const serverUrl = "http://localhost:3001";
 const getAllContacts = () => {
     return axios.get(serverUrl+"/api/persons")
         .then(res => {
+            console.log("json data from getAllContacts:::::::", res.data);
             if (res.data && res.data.length > 0) {
                 return res.data;
             }
@@ -15,7 +16,7 @@ const getAllContacts = () => {
 }
 
 const getContact = (id) => {
-    return axios.get(serverUrl+`/${id}`)
+    return axios.get(serverUrl+`/api/persons/${id}`)
     .then(res => {
         if(res.data && res.data.length > 0){
             return res.data;

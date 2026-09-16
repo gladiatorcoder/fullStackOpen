@@ -1,17 +1,19 @@
 import express from "express";
-import data from "./db.json" with {type: 'json'};
 import morgan from "morgan";
 import cors from "cors";
+import contactData from "./db.json" with { type: "json" };
+let data = contactData.contacts;
 const app = express();
 const PORT = 3001;
 
+//Creating req.body token for morgan
+morgan.token('body', (req) => JSON.stringify(req.body));
+
 // Enable express to read form data in request.body
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use(express.json());
-
-
-// Enable app to use cors middleware npm package
 app.use(cors());
+//app.use(express.json());
 
 
 // Request logger middleware
@@ -28,10 +30,7 @@ app.use(cors());
 // app.use(requestLogger);
 
 
-// Morgan middleware configuration
-// app.use(morgan('tiny'));
-var logger = morgan('tiny');
-morgan.token('type', function (req, res) { return JSON.stringify(req.body) });
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 
 // API endpoints
@@ -41,7 +40,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
-    console.log(data);
     // logger(req, res, function (err) {
     if (data && data.length > 0) {
         res.status(200).send(data);
@@ -54,6 +52,7 @@ app.get("/api/persons", (req, res) => {
 app.get("/api/persons/:id", (req, res) => {
     const id = req.params.id;
     const contact = data.find(contact => contact.id === id);
+    console.log(contact);
     if (contact) {
         res.status(200).send(contact);
     } else {
@@ -74,79 +73,75 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-    logger(req, res, function (err) {
-        const id = Math.floor(Math.random() * 190000).toString();
-        if (req.body.name && req.body.number) {
-            const duplicateName = data.find(contact => contact.name === req.body.name);
-            const duplicateNumber = data.find(contact => contact.number === req.body.number);
-            if (duplicateName || duplicateNumber) {
-                res.status(400).send("Name or number already exists.");
-            } else {
-                const newContact = {
-                    id: id,
-                    name: req.body.name,
-                    number: req.body.number
-                };
-                data.push(newContact);
-                res.status(200).send(data);
-            }
+    const id = Math.floor(Math.random() * 190000).toString();
+    if (req.body.name && req.body.number) {
+        const duplicateName = data.find(contact => contact.name === req.body.name);
+        const duplicateNumber = data.find(contact => contact.number === req.body.number);
+        if (duplicateName || duplicateNumber) {
+            res.status(400).send("Name or number already exists.");
         } else {
-            console.log("No req body object found");
-            res.status(400).send("Incorrect data received!");
+            const newContact = {
+                id: id,
+                name: req.body.name,
+                number: req.body.number
+            };
+            data.push(newContact);
+            res.status(200).send(newContact);
         }
-
-        console.log(req.body);
-    });
+    } else {
+        console.log("No req body object found");
+        res.status(400).send("Incorrect data received!");
+    }
 });
 
 // Page endpoints
 
-app.get("/persons", (req, res) => {
-    let html = "<h1>Persons</h1>";
+// app.get("/persons", (req, res) => {
+//     let html = "<h1>Persons</h1>";
 
-    if (data && data.length > 1) {
-        for (let i = 0; i < data.length; i++) {
-            html += `
-                <p>${data[i].name} - ${data[i].number}</p>
-                <a href="/api/persons/${data[i].id}">View contact</a>
-                <button data-delete-id="${data[i].id}" class="deleteContact">
-                    Delete contact
-                </button>
-            `;
-        }
-    }
+//     if (data && data.length > 1) {
+//         for (let i = 0; i < data.length; i++) {
+//             html += `
+//                 <p>${data[i].name} - ${data[i].number}</p>
+//                 <a href="/api/persons/${data[i].id}">View contact</a>
+//                 <button data-delete-id="${data[i].id}" class="deleteContact">
+//                     Delete contact
+//                 </button>
+//             `;
+//         }
+//     }
 
-    html += `
-        <script>
-            const deleteBtns = document.querySelectorAll(".deleteContact");
+//     html += `
+//         <script>
+//             const deleteBtns = document.querySelectorAll(".deleteContact");
 
-            for (let i = 0; i < deleteBtns.length; i++) {
-                deleteBtns[i].addEventListener("click", deleteContact);
-            }
+//             for (let i = 0; i < deleteBtns.length; i++) {
+//                 deleteBtns[i].addEventListener("click", deleteContact);
+//             }
 
-            function deleteContact(e) {
-                const deleteId = e.target.dataset.deleteId;
+//             function deleteContact(e) {
+//                 const deleteId = e.target.dataset.deleteId;
 
-                fetch(\`http://localhost:3001/api/persons/\${deleteId}\`, {
-                    method: "DELETE"
-                })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(err => {
-                    console.error("Delete contact failed. Error:", err);
-                });
-            }
-        </script>
-    `;
+//                 fetch(\`http://localhost:3001/api/persons/\${deleteId}\`, {
+//                     method: "DELETE"
+//                 })
+//                 .then(res => res.json())
+//                 .then(data => {
+//                     console.log(data);
+//                 })
+//                 .catch(err => {
+//                     console.error("Delete contact failed. Error:", err);
+//                 });
+//             }
+//         </script>
+//     `;
 
-    if (data && data.length) {
-        res.send(html);
-    } else {
-        res.send("No persons found!");
-    }
-});
+//     if (data && data.length) {
+//         res.send(html);
+//     } else {
+//         res.send("No persons found!");
+//     }
+// });
 
 app.delete("/persons/:id", (req, res) => {
     const id = req.params.id;

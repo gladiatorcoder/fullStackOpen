@@ -1,10 +1,14 @@
 const express = require("express");
 let data = require("./db.json");
-const morgan = require("morgan");
+var morgan = require("morgan");
 const axios = require("axios");
 const app = express();
 const PORT = 3001;
 const cors = require("cors");
+
+
+//Creating req.body token for morgan
+morgan.token('body', (req) => JSON.stringify(req.body));
 
 // Enable express to read form data in request.body
 app.use(express.json());
@@ -27,10 +31,7 @@ app.use(cors());
 // app.use(requestLogger);
 
 
-// Morgan middleware configuration
-// app.use(morgan('tiny'));
-var logger = morgan('tiny');
-morgan.token('type', function (req, res) { return JSON.stringify(req.body) });
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 
 // API endpoints
@@ -72,27 +73,25 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-    logger(req, res, function (err) {
-        const id = Math.floor(Math.random() * 190000).toString();
-        if (req.body.name && req.body.number) {
-            const duplicateName = data.find(contact => contact.name === req.body.name);
-            const duplicateNumber = data.find(contact => contact.number === req.body.number);
-            if (duplicateName || duplicateNumber) {
-                res.status(400).send("Name or number already exists.");
-            } else {
-                const newContact = {
-                    id: id,
-                    name: req.body.name,
-                    number: req.body.number
-                };
-                data.push(newContact);
-                res.status(200).send(newContact);
-            }
+    const id = Math.floor(Math.random() * 190000).toString();
+    if (req.body.name && req.body.number) {
+        const duplicateName = data.find(contact => contact.name === req.body.name);
+        const duplicateNumber = data.find(contact => contact.number === req.body.number);
+        if (duplicateName || duplicateNumber) {
+            res.status(400).send("Name or number already exists.");
         } else {
-            console.log("No req body object found");
-            res.status(400).send("Incorrect data received!");
+            const newContact = {
+                id: id,
+                name: req.body.name,
+                number: req.body.number
+            };
+            data.push(newContact);
+            res.status(200).send(newContact);
         }
-    });
+    } else {
+        console.log("No req body object found");
+        res.status(400).send("Incorrect data received!");
+    }
 });
 
 // Page endpoints
